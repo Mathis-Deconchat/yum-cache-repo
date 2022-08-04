@@ -11,14 +11,15 @@ import express from 'express';
 import { createWriteStream } from "fs";
 import path from "path";
 import { exec } from 'child_process';
-import config from "../config.json"
-
+import config from "../config.json";
+import fs from "fs";
 const app = express()
 const port = 8080
 const bind_addr = '127.0.0.1'
 const download_dirpath = path.resolve(path.join(__dirname, '..', '..', 'downloaded_packages'))
 let createrepo_running_lock: boolean = false
 let createrepo_promise: Promise<any> = null
+
 
 app.get('/proxy/*', async (req, res) => {
     console.log(req.url)
@@ -54,7 +55,6 @@ app.get('/proxy/*', async (req, res) => {
 
             createrepo_promise = update_repo()
 
-
         }
     }
     res.redirect(final_url)
@@ -64,20 +64,23 @@ app.use("/repo/", express.static(download_dirpath));
 
 app.listen(port, bind_addr, async () => {
     await print_gpg_pubkey()
+    await update_repo()
     console.log("YPHC serving on port " + port)
 })
 
 
 export async function downloadFile(fileUrl: string, outputLocationPath: string) {
     console.log(outputLocationPath)
-    const writer = createWriteStream(outputLocationPath);
-    return axios({
+    const writer = createWriteStream(outputLocationPath + ".part");
+    const res = await axios({
         method: 'get',
         url: fileUrl,
         responseType: 'stream',
-    }).then(response => {
-        return new Promise((resolve, reject) => {
-            response.data.pipe(writer);
+    })
+
+    try {
+        await new Promise((resolve, reject) => {
+            res.data.pipe(writer);
             let error = null;
             writer.on('error', err => {
                 error = err;
@@ -89,8 +92,17 @@ export async function downloadFile(fileUrl: string, outputLocationPath: string) 
                     resolve(true);
                 }
             });
+
         });
-    });
+        fs.rename(outputLocationPath + ".part", outputLocationPath, function (err) {
+            if (err) throw err
+        })
+    } catch (error) {
+        fs.unlink(outputLocationPath + ".part", function (err) {
+            if (err) throw err
+        })
+    }
+
 }
 
 async function update_repo() {

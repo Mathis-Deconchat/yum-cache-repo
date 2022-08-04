@@ -1,0 +1,31 @@
+# rocky.repo
+#
+# The mirrorlist system uses the connecting IP address of the client and the
+# update status of each mirror to pick current mirrors that are geographically
+# close to the client.  You should use this for Rocky updates unless you are
+# manually picking other mirrors.
+#
+# If the mirrorlist does not work for you, you can try the commented out
+# baseurl line instead.
+
+[mocked]
+name=Rocky Linux $releasever - Mocked
+#mirrorlist=http://localhost:8080/https/mirrors.rockylinux.org/mirrorlist?arch=$basearch&repo=BaseOS-$releasever$rltypeCACHEREPOMARKER/
+baseurl=http://localhost:8080/proxy/http/localhost:8000/repo/CACHEREPOMARKER/
+gpgcheck=1
+enabled=1
+countme=1
+metadata_expire=0h
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-9
+       file:///etc/custom_gpg/localrepo
+
+[backup]
+name=Rocky Linux $releasever - Backup
+#mirrorlist=http://localhost:8080/https/mirrors.rockylinux.org/mirrorlist?arch=$basearch&repo=BaseOS-$releasever$rltypeCACHEREPOMARKER/
+baseurl=http://localhost:8080/repo/
+gpgcheck=1
+enabled=1
+countme=1
+metadata_expire=0h
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-9
+       file:///etc/custom_gpg/localrepo

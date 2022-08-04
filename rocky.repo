@@ -10,8 +10,8 @@
 
 [baseos]
 name=Rocky Linux $releasever - BaseOS
-#mirrorlist=http://localhost:8080/https/mirrors.rockylinux.org/mirrorlist?arch=$basearch&repo=BaseOS-$releasever$rltypeCACHEREPOMARKER/
-baseurl=http://localhost:8080/http/dl.rockylinux.org/$contentdir/$releasever/BaseOS/$basearch/os/CACHEREPOMARKER/
+#mirrorlist=http://localhost:8080/proxy/https/mirrors.rockylinux.org/mirrorlist?arch=$basearch&repo=BaseOS-$releasever$rltypeCACHEREPOMARKER/
+baseurl=http://localhost:8080/proxy/http/dl.rockylinux.org/$contentdir/$releasever/BaseOS/$basearch/os/CACHEREPOMARKER/
 gpgcheck=1
 enabled=1
 countme=1
@@ -20,8 +20,8 @@ gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-9
 
 [baseos-debug]
 name=Rocky Linux $releasever - BaseOS - Debug
-#mirrorlist=http://localhost:8080/https/mirrors.rockylinux.org/mirrorlist?arch=$basearch&repo=BaseOS-$releasever-debug$rltypeCACHEREPOMARKER/
-baseurl=http://localhost:8080/http/dl.rockylinux.org/$contentdir/$releasever/BaseOS/$basearch/debug/tree/CACHEREPOMARKER/
+#mirrorlist=http://localhost:8080/proxy/https/mirrors.rockylinux.org/mirrorlist?arch=$basearch&repo=BaseOS-$releasever-debug$rltypeCACHEREPOMARKER/
+baseurl=http://localhost:8080/proxy/http/dl.rockylinux.org/$contentdir/$releasever/BaseOS/$basearch/debug/tree/CACHEREPOMARKER/
 gpgcheck=1
 enabled=0
 metadata_expire=6h
@@ -29,8 +29,8 @@ gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-9
 
 [baseos-source]
 name=Rocky Linux $releasever - BaseOS - Source
-#mirrorlist=http://localhost:8080/https/mirrors.rockylinux.org/mirrorlist?arch=source&repo=BaseOS-$releasever-source$rltypeCACHEREPOMARKER/
-baseurl=http://localhost:8080/http/dl.rockylinux.org/$contentdir/$releasever/BaseOS/source/tree/CACHEREPOMARKER/
+#mirrorlist=http://localhost:8080/proxy/https/mirrors.rockylinux.org/mirrorlist?arch=source&repo=BaseOS-$releasever-source$rltypeCACHEREPOMARKER/
+baseurl=http://localhost:8080/proxy/http/dl.rockylinux.org/$contentdir/$releasever/BaseOS/source/tree/CACHEREPOMARKER/
 gpgcheck=1
 enabled=0
 metadata_expire=6h
@@ -38,8 +38,8 @@ gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-9
 
 [appstream]
 name=Rocky Linux $releasever - AppStream
-#mirrorlist=http://localhost:8080/https/mirrors.rockylinux.org/mirrorlist?arch=$basearch&repo=AppStream-$releasever$rltypeCACHEREPOMARKER/
-baseurl=http://localhost:8080/http/dl.rockylinux.org/$contentdir/$releasever/AppStream/$basearch/os/CACHEREPOMARKER/
+#mirrorlist=http://localhost:8080/proxy/https/mirrors.rockylinux.org/mirrorlist?arch=$basearch&repo=AppStream-$releasever$rltypeCACHEREPOMARKER/
+baseurl=http://localhost:8080/proxy/http/dl.rockylinux.org/$contentdir/$releasever/AppStream/$basearch/os/CACHEREPOMARKER/
 gpgcheck=1
 enabled=1
 countme=1
@@ -48,8 +48,8 @@ gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-9
 
 [appstream-debug]
 name=Rocky Linux $releasever - AppStream - Debug
-#mirrorlist=http://localhost:8080/https/mirrors.rockylinux.org/mirrorlist?arch=$basearch&repo=AppStream-$releasever-debug$rltypeCACHEREPOMARKER/
-baseurl=http://localhost:8080/http/dl.rockylinux.org/$contentdir/$releasever/AppStream/$basearch/debug/tree/CACHEREPOMARKER/
+#mirrorlist=http://localhost:8080/proxy/https/mirrors.rockylinux.org/mirrorlist?arch=$basearch&repo=AppStream-$releasever-debug$rltypeCACHEREPOMARKER/
+baseurl=http://localhost:8080/proxy/http/dl.rockylinux.org/$contentdir/$releasever/AppStream/$basearch/debug/tree/CACHEREPOMARKER/
 gpgcheck=1
 enabled=0
 metadata_expire=6h
@@ -57,8 +57,8 @@ gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-9
 
 [appstream-source]
 name=Rocky Linux $releasever - AppStream - Source
-#mirrorlist=http://localhost:8080/https/mirrors.rockylinux.org/mirrorlist?arch=source&repo=AppStream-$releasever-source$rltypeCACHEREPOMARKER/
-baseurl=http://localhost:8080/http/dl.rockylinux.org/$contentdir/$releasever/AppStream/source/tree/CACHEREPOMARKER/
+#mirrorlist=http://localhost:8080/proxy/https/mirrors.rockylinux.org/mirrorlist?arch=source&repo=AppStream-$releasever-source$rltypeCACHEREPOMARKER/
+baseurl=http://localhost:8080/proxy/http/dl.rockylinux.org/$contentdir/$releasever/AppStream/source/tree/CACHEREPOMARKER/
 gpgcheck=1
 enabled=0
 metadata_expire=6h
@@ -66,8 +66,8 @@ gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-9
 
 [crb]
 name=Rocky Linux $releasever - CRB
-#mirrorlist=http://localhost:8080/https/mirrors.rockylinux.org/mirrorlist?arch=$basearch&repo=CRB-$releasever$rltypeCACHEREPOMARKER/
-baseurl=http://localhost:8080/http/dl.rockylinux.org/$contentdir/$releasever/CRB/$basearch/os/CACHEREPOMARKER/
+#mirrorlist=http://localhost:8080/proxy/https/mirrors.rockylinux.org/mirrorlist?arch=$basearch&repo=CRB-$releasever$rltypeCACHEREPOMARKER/
+baseurl=http://localhost:8080/proxy/http/dl.rockylinux.org/$contentdir/$releasever/CRB/$basearch/os/CACHEREPOMARKER/
 gpgcheck=1
 enabled=0
 countme=1
@@ -76,8 +76,8 @@ gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-9
 
 [crb-debug]
 name=Rocky Linux $releasever - CRB - Debug
-#mirrorlist=http://localhost:8080/https/mirrors.rockylinux.org/mirrorlist?arch=$basearch&repo=CRB-$releasever-debug$rltypeCACHEREPOMARKER/
-baseurl=http://localhost:8080/http/dl.rockylinux.org/$contentdir/$releasever/CRB/$basearch/debug/tree/CACHEREPOMARKER/
+#mirrorlist=http://localhost:8080/proxy/https/mirrors.rockylinux.org/mirrorlist?arch=$basearch&repo=CRB-$releasever-debug$rltypeCACHEREPOMARKER/
+baseurl=http://localhost:8080/proxy/http/dl.rockylinux.org/$contentdir/$releasever/CRB/$basearch/debug/tree/CACHEREPOMARKER/
 gpgcheck=1
 enabled=0
 metadata_expire=6h
@@ -85,8 +85,8 @@ gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-9
 
 [crb-source]
 name=Rocky Linux $releasever - CRB - Source
-#mirrorlist=http://localhost:8080/https/mirrors.rockylinux.org/mirrorlist?arch=source&repo=CRB-$releasever-source$rltypeCACHEREPOMARKER/
-baseurl=http://localhost:8080/http/dl.rockylinux.org/$contentdir/$releasever/CRB/source/tree/CACHEREPOMARKER/
+#mirrorlist=http://localhost:8080/proxy/https/mirrors.rockylinux.org/mirrorlist?arch=source&repo=CRB-$releasever-source$rltypeCACHEREPOMARKER/
+baseurl=http://localhost:8080/proxy/http/dl.rockylinux.org/$contentdir/$releasever/CRB/source/tree/CACHEREPOMARKER/
 gpgcheck=1
 enabled=0
 metadata_expire=6h
