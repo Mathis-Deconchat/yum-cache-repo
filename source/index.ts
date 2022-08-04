@@ -61,7 +61,7 @@ app.get('/proxy/*', async (req, res) => {
 
     // (?<=\/)[^\/]+\.rpm$
     const rpmname_regex = new RegExp(Buffer.from('KD88PVwvKVteXC9dK1wucnBtJA==', 'base64').toString('utf-8'), 'g')
-    const matched_rpm_filenames = req.url.match(rpmname_regex) 
+    const matched_rpm_filenames = req.url.match(rpmname_regex)
     if (matched_rpm_filenames) {
         let matched_rpm_filename = Array.from(matched_rpm_filenames)[0]
         if (matched_rpm_filename) {
@@ -116,30 +116,10 @@ async function update_repo() {
     if (createrepo_running_lock)
         return
     createrepo_running_lock = true
-    exec("docker run --rm -e verbose=true -e database=true -e update=true -e deltas=true -v '" + download_dirpath + "':/data sark/createrepo:latest", (error, stdout, stderr) => {
-        if (error) {
-            console.log(`error: ${error.message}`);
-            return;
-        }
-        if (stderr) {
-            console.log(`stderr: ${stderr}`);
-            return;
-        }
-        console.log(`stdout: ${stdout}`);
-    })
-    exec("gpg --local-user '" + config.gpg_username + "' --detach-sign --armor --yes '" + path.resolve(path.join(download_dirpath, "repodata", "repomd.xml")) + "'", (error, stdout, stderr) => {
-        if (error) {
-            console.log(`error: ${error.message}`);
-            return;
-        }
-        if (stderr) {
-            console.log(`stderr: ${stderr}`);
-            return;
-        }
-        console.log(`stdout: ${stdout}`);
-    })
-
-
+    await _execute_createrepo()
+    console.log("finished generating metadata")
+    await _sign_repo_metadata()
+    console.log("finished signing metadata")
     createrepo_running_lock = false
     return
 }
@@ -151,6 +131,44 @@ function print_gpg_pubkey(): Promise<void> {
             if (error) {
                 console.log(`error: ${error.message}`);
                 reject("gpg public key export failed")
+                return;
+            }
+            if (stderr) {
+                console.log(`stderr: ${stderr}`);
+                return;
+            }
+            console.log(`stdout: ${stdout}`);
+            resolve()
+        })
+    })
+
+}
+
+function _execute_createrepo(): Promise<void> {
+    return new Promise<void>((resolve, reject) => {
+        exec("docker run --user $(id -u) --rm -e verbose=true -e database=true -e update=true -e deltas=true -v '" + download_dirpath + "':/data sark/createrepo:latest", (error, stdout, stderr) => {
+            if (error) {
+                console.log(`error: ${error.message}`);
+                reject("docker run failed")
+                return;
+            }
+            if (stderr) {
+                console.log(`stderr: ${stderr}`);
+                return;
+            }
+            console.log(`stdout: ${stdout}`);
+            resolve()
+        })
+    })
+
+}
+
+function _sign_repo_metadata(): Promise<void> {
+    return new Promise<void>((resolve, reject) => {
+        exec("gpg --local-user '" + config.gpg_username + "' --detach-sign --armor --yes '" + path.resolve(path.join(download_dirpath, "repodata", "repomd.xml")) + "'", (error, stdout, stderr) => {
+            if (error) {
+                console.log(`error: ${error.message}`);
+                reject("Could not sign metadata")
                 return;
             }
             if (stderr) {
