@@ -1,0 +1,65 @@
+# rocky-extras.repo
+#
+# The mirrorlist system uses the connecting IP address of the client and the
+# update status of each mirror to pick current mirrors that are geographically
+# close to the client.  You should use this for Rocky updates unless you are
+# manually picking other mirrors.
+#
+# If the mirrorlist does not work for you, you can try the commented out
+# baseurl line instead.
+
+[extras]
+name=Rocky Linux $releasever - Extras
+#mirrorlist=http://localhost:8080/https/mirrors.rockylinux.org/mirrorlist?arch=$basearch&repo=extras-$releasever$rltypeCACHEREPOMARKER/
+baseurl=http://localhost:8080/http/dl.rockylinux.org/$contentdir/$releasever/extras/$basearch/os/CACHEREPOMARKER/
+gpgcheck=1
+enabled=1
+countme=1
+metadata_expire=6h
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-9
+
+[extras-debug]
+name=Rocky Linux $releasever - Extras Debug
+#mirrorlist=http://localhost:8080/https/mirrors.rockylinux.org/mirrorlist?arch=$basearch&repo=extras-$releasever-debug$rltypeCACHEREPOMARKER/
+baseurl=http://localhost:8080/http/dl.rockylinux.org/$contentdir/$releasever/extras/$basearch/debug/tree/CACHEREPOMARKER/
+gpgcheck=1
+enabled=0
+metadata_expire=6h
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-9
+
+[extras-source]
+name=Rocky Linux $releasever - Extras Source
+#mirrorlist=http://localhost:8080/https/mirrors.rockylinux.org/mirrorlist?arch=$basearch&repo=extras-$releasever-source$rltypeCACHEREPOMARKER/
+baseurl=http://localhost:8080/http/dl.rockylinux.org/$contentdir/$releasever/extras/source/tree/CACHEREPOMARKER/
+gpgcheck=1
+enabled=0
+metadata_expire=6h
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-9
+
+[plus]
+name=Rocky Linux $releasever - Plus
+#mirrorlist=http://localhost:8080/https/mirrors.rockylinux.org/mirrorlist?arch=$basearch&repo=rockyplus-$releasever$rltypeCACHEREPOMARKER/
+baseurl=http://localhost:8080/http/dl.rockylinux.org/$contentdir/$releasever/plus/$basearch/os/CACHEREPOMARKER/
+gpgcheck=1
+enabled=0
+countme=1
+metadata_expire=6h
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-9
+
+[plus-debug]
+name=Rocky Linux $releasever - Plus - Debug
+#mirrorlist=http://localhost:8080/https/mirrors.rockylinux.org/mirrorlist?arch=$basearch&repo=rockyplus-$releasever-debug$rltypeCACHEREPOMARKER/
+baseurl=http://localhost:8080/http/dl.rockylinux.org/$contentdir/$releasever/plus/$basearch/debug/tree/CACHEREPOMARKER/
+gpgcheck=1
+enabled=0
+metadata_expire=6h
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-9
+
+[plus-source]
+name=Rocky Linux $releasever - Plus - Source
+#mirrorlist=http://localhost:8080/https/mirrors.rockylinux.org/mirrorlist?arch=source&repo=rockyplus-$releasever-source$rltypeCACHEREPOMARKER/
+baseurl=http://localhost:8080/http/dl.rockylinux.org/$contentdir/$releasever/plus/source/tree/CACHEREPOMARKER/
+gpgcheck=1
+enabled=0
+metadata_expire=6h
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-9
