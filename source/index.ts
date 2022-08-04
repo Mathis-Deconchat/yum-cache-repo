@@ -40,7 +40,9 @@ app.get('*', async (req, res) => {
     const rpmname_regex = new RegExp(Buffer.from('KD88PVwvKVteXC9dK1wucnBtJA==', 'base64').toString('utf-8'), 'g')
     const matched_rpm_filename = Array.from(req.url.match(rpmname_regex))[0]
     if (matched_rpm_filename) {
-        downloadFile(final_url, path.resolve(path.join(download_dirpath,matched_rpm_filename )) )
+        await downloadFile(final_url, path.resolve(path.join(download_dirpath,matched_rpm_filename )) )
+
+        
     }
 
     //const proxied_request_res = await axios.get(final_url)
