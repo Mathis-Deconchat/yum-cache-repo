@@ -7,21 +7,25 @@
 
 
 import axios from "axios";
-import express from 'express'
+import express from 'express';
 import { createWriteStream } from "fs";
 import path from "path";
+import { exec } from 'child_process';
+import config from "../config.json"
 
 const app = express()
 const port = 8080
 const bind_addr = '127.0.0.1'
-const download_dirpath = path.resolve(path.join(__dirname,'..','downloaded_packages'))
+const download_dirpath = path.resolve(path.join(__dirname, '..', '..', 'downloaded_packages'))
+let createrepo_running_lock: boolean = false
+let createrepo_promise: Promise<any> = null
 
-app.get('*', async (req, res) => {
-    console.log(req.url) 
+app.get('/proxy/*', async (req, res) => {
+    console.log(req.url)
 
-    // ^\/(https?)\/(.+?\/)((?:.*\/)?)CACHEREPOMARKER\/(.*)
+    // ^\/proxy\/(https?)\/(.+?\/)((?:.*\/)?)CACHEREPOMARKER\/(.*)
 
-    const urlparse_regex = new RegExp(Buffer.from('XlwvKGh0dHBzPylcLyguKz9cLykoKD86LipcLyk/KUNBQ0hFUkVQT01BUktFUlwvKC4qKQ==', 'base64').toString('utf-8'), 'g')
+    const urlparse_regex = new RegExp(Buffer.from('XlwvcHJveHlcLyhodHRwcz8pXC8oLis/XC8pKCg/Oi4qXC8pPylDQUNIRVJFUE9NQVJLRVJcLyguKik=', 'base64').toString('utf-8'), 'g')
     const matched_url = Array.from(req.url.matchAll(urlparse_regex))[0]
     console.log(urlparse_regex)
     console.log(matched_url)
@@ -38,24 +42,30 @@ app.get('*', async (req, res) => {
 
     // (?<=\/)[^\/]+\.rpm$
     const rpmname_regex = new RegExp(Buffer.from('KD88PVwvKVteXC9dK1wucnBtJA==', 'base64').toString('utf-8'), 'g')
-    const matched_rpm_filename = Array.from(req.url.match(rpmname_regex))[0]
-    if (matched_rpm_filename) {
-        await downloadFile(final_url, path.resolve(path.join(download_dirpath,matched_rpm_filename )) )
+    const matched_rpm_filenames = req.url.match(rpmname_regex) 
+    if (matched_rpm_filenames) {
+        let matched_rpm_filename = Array.from(matched_rpm_filenames)[0]
+        if (matched_rpm_filename) {
+            await downloadFile(final_url, path.resolve(path.join(download_dirpath, matched_rpm_filename)))
 
-        
+            if (createrepo_running_lock) {
+                await createrepo_promise
+            }
+
+            createrepo_promise = update_repo()
+
+
+        }
     }
-
-    //const proxied_request_res = await axios.get(final_url)
-
-    // console.log(proxied_request_res)
-    // res.send('Réussi sur url ' + final_url + ' avec code: ' + proxied_request_res.statusCode + '\n')
     res.redirect(final_url)
 })
 
-app.listen(port, bind_addr, () => {
-    console.log("Example app listening on port " + port)
-})
+app.use("/repo/", express.static(download_dirpath));
 
+app.listen(port, bind_addr, async () => {
+    await print_gpg_pubkey()
+    console.log("YPHC serving on port " + port)
+})
 
 
 export async function downloadFile(fileUrl: string, outputLocationPath: string) {
@@ -81,4 +91,56 @@ export async function downloadFile(fileUrl: string, outputLocationPath: string) 
             });
         });
     });
+}
+
+async function update_repo() {
+    if (createrepo_running_lock)
+        return
+    createrepo_running_lock = true
+    exec("docker run --rm -e verbose=true -e database=true -e update=true -e deltas=true -v '" + download_dirpath + "':/data sark/createrepo:latest", (error, stdout, stderr) => {
+        if (error) {
+            console.log(`error: ${error.message}`);
+            return;
+        }
+        if (stderr) {
+            console.log(`stderr: ${stderr}`);
+            return;
+        }
+        console.log(`stdout: ${stdout}`);
+    })
+    exec("gpg --local-user '" + config.gpg_username + "' --detach-sign --armor --yes '" + path.resolve(path.join(download_dirpath, "repodata", "repomd.xml")) + "'", (error, stdout, stderr) => {
+        if (error) {
+            console.log(`error: ${error.message}`);
+            return;
+        }
+        if (stderr) {
+            console.log(`stderr: ${stderr}`);
+            return;
+        }
+        console.log(`stdout: ${stdout}`);
+    })
+
+
+    createrepo_running_lock = false
+    return
+}
+
+
+function print_gpg_pubkey(): Promise<void> {
+    return new Promise<void>((resolve, reject) => {
+        exec("gpg --export -a '" + config.gpg_username + "'", (error, stdout, stderr) => {
+            if (error) {
+                console.log(`error: ${error.message}`);
+                reject("gpg public key export failed")
+                return;
+            }
+            if (stderr) {
+                console.log(`stderr: ${stderr}`);
+                return;
+            }
+            console.log(`stdout: ${stdout}`);
+            resolve()
+        })
+    })
+
 }
