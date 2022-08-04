@@ -14,7 +14,7 @@
 // KIND, either express or implied.  See the License for the
 // specific language governing permissions and limitations
 // under the License.    
-// CREATOR : Ameil Rivier 
+// CREATOR : Amiel Rivier 
 // COLLABORATOR : Mathis DECONCHAT
 
 // dans la config: stocker les whitelist de site de repository
